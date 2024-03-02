@@ -3,7 +3,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 
-def extract_web():
+def extract_web() -> pd.DataFrame:
     URL = "https://inet.detik.com/indeks"
 
     full_data = []
