@@ -8,7 +8,7 @@ def extract_web() -> pd.DataFrame:
 
     full_data = []
 
-    for page in range(1, 251):
+    for page in range(1, 100):
         resp = requests.get(f"{URL}/{page}")
         if resp.status_code == 200:
             soup = BeautifulSoup(resp.text, "html.parser")

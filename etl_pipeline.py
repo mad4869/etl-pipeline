@@ -57,8 +57,8 @@ class ValidateData(luigi.Task):
     def run(self):
         tables = ["PRODUCTS", "SALES", "WEB TEXT"]
 
-        for table in tables:
-            df = pd.read_csv(self.input()[i].path)
+        for index, table in enumerate(tables):
+            df = pd.read_csv(self.input()[index].path)
 
             validate_data(df, table)
 
@@ -142,7 +142,7 @@ if __name__ == "__main__":
         [
             ExtractProductsDataFromCSV(),
             ExtractSalesDataFromDB(),
-            ExtractTextDataFromWeb,
+            ExtractTextDataFromWeb(),
             ValidateData(),
             TransformProductsData(),
             TransformSalesData(),
