@@ -6,6 +6,7 @@ from validate.validate_data import validate_data
 from transform.transform_products_data import transform_products_data
 from transform.transform_sales_data import transform_sales_data
 from transform.transform_web_text_data import transform_web_text_data
+from load.load_data import load_data
 
 
 class ExtractProductsDataFromCSV(luigi.Task):
@@ -108,3 +109,44 @@ class TransformWebTextData(luigi.Task):
 
     def output(self):
         return luigi.LocalTarget("data/transformed/web_text_data.csv")
+
+
+class LoadData(luigi.Task):
+
+    def requires(self):
+        return [TransformProductsData(), TransformSalesData(), TransformWebTextData()]
+
+    def run(self):
+        products_df = pd.read_csv(self.input()[0].path)
+        sales_df = pd.read_csv(self.input()[1].path)
+        web_text_df = pd.read_csv(self.input()[2].path)
+
+        loaded_products_df = load_data(products_df, "products")
+        loaded_sales_df = load_data(sales_df, "sales")
+        loaded_web_text_df = load_data(web_text_df, "web_text")
+
+        loaded_products_df.to_csv(self.output()[0].path, index=False)
+        loaded_sales_df.to_csv(self.output()[1].path, index=False)
+        loaded_web_text_df.to_csv(self.output()[2].path, index=False)
+
+    def output(self):
+        return [
+            luigi.LocalTarget("data/loaded/products_data.csv"),
+            luigi.LocalTarget("data/loaded/sales_data.csv"),
+            luigi.LocalTarget("data/loaded/web_text_data.csv"),
+        ]
+
+
+if __name__ == "__main__":
+    luigi.build(
+        [
+            ExtractProductsDataFromCSV(),
+            ExtractSalesDataFromDB(),
+            ExtractTextDataFromWeb,
+            ValidateData(),
+            TransformProductsData(),
+            TransformSalesData(),
+            TransformWebTextData(),
+            LoadData(),
+        ]
+    )
