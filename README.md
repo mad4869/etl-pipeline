@@ -492,6 +492,8 @@ if __name__ == "__main__":
     )
 ```
 
+The database output can be accessed using docker image available [here.](https://hub.docker.com/repository/docker/mad4869/etl_postgres/general)
+
 ### ETL Scheduling
 
 To ensure the pipeline runs regularly, it is scheduled using `crontab`. This tool executes a shell script every minute, which in turn triggers the pipeline's execution.
