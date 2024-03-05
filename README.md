@@ -532,6 +532,8 @@ The crontab for running the shell script regularly:
 
 Scenario 1 focuses on ensuring the pipeline runs without any issue and the data is successfully loaded to their respective tables within the database.
 
+![Luigi Execution Summary](/docs/luigi.png)
+
 Products table:
 
 ![Products Table in the Database](/docs/scenario-1-products.png)
